@@ -1,7 +1,11 @@
 const TOTAL_CITIES = 5;
-const FPS = 5;
+const FPS = 60;
 
 let paused = false;
+let currentStrategy = "LEX";
+let steps;
+let stepsAtLastShortest;
+
 let cities;
 let order;
 let shortestDistance;
@@ -22,16 +26,22 @@ function draw() {
     drawCities(cities);
 
     // update cities
-    useStrategy("RANDOM_SWAP", order);
-    // useStrategy("LEX", order);
+    order = getNextOrder(currentStrategy, order);
 
     // update shortest distance
     const d = calcPathLength(cities, order);
     if (d < shortestDistance) {
         shortestDistance = d;
         shortestPathOrder = order.slice();
+        stepsAtLastShortest = steps;
     }
-    console.log(shortestDistance);
+    // console.log("Current Step:", steps);
+    // console.log("Current Order:", order);
+    // console.log("Current Distance:", nf(d, 0, 2));
+
+    // console.log("Steps at shortest:", stepsAtLastShortest);
+    // console.log("Shortest Path Order:", shortestPathOrder);
+    // console.log("Shortest distance:", nf(shortestDistance, 0, 2));
 }
 
 // Draw functions
@@ -69,6 +79,8 @@ function mouseClicked() {
 }
 
 function setupCities() {
+    steps = 0;
+    stepsAtLastShortest = 0;
     cities = [];
     order = [];
     for (let i = 0; i < TOTAL_CITIES; i++) {
@@ -78,6 +90,10 @@ function setupCities() {
 
     shortestDistance = calcPathLength(cities, order);
     shortestPathOrder = order.slice();
+
+    // Start with pause
+    if(!paused)
+        togglePause();
 }
 
 function togglePause() {
@@ -113,21 +129,44 @@ function calcPathLength(points, order) {
 
 
 // Strategy Switch
-function useStrategy(type, order) {
-    if (type === "RANDOM_SWAP")
-        randomSwap(order);
-    else if (type === "LEX")
-        nextLexicographicOrder(order);
+function getNextOrder(strategyType, order) {
+    steps++;
+    if (strategyType === "RANDOM_SWAP")
+        return randomSwap(order);
+    else if (strategyType === "LEX")
+        return nextLexOrder(order);
 }
 
 // Strategies
-function randomSwap(order) {
-    // random swaps
-    const a = floor(random(order.length));
-    const b = floor(random(order.length));
-    swap(order, a, b);
+function randomSwap(currentOrder) {
+    const a = floor(random(currentOrder.length));
+    const b = floor(random(currentOrder.length));
+    swap(currentOrder, a, b);
+    return currentOrder;
 }
 
-function nextLexicographicOrder(order) {
+function nextLexOrder(currentOrder) {
+    let x = -1;
+    for (let i = currentOrder.length - 2; i >= 0; i--) {
+        if (currentOrder[i] < currentOrder[i + 1]) {
+            x = i;
+            break;
+        }
+    }
+    if (x == -1) {
+        togglePause();
+        return currentOrder;
+    }
 
+    let y;
+    for (let i = currentOrder.length - 1; i >= 0; i--) {
+        if (currentOrder[x] < currentOrder[i]) {
+            y = i;
+            break;
+        }
+    }
+
+    swap(currentOrder, x, y);
+    let newOrder = [].concat(currentOrder.slice(0, x + 1), currentOrder.slice(x + 1).reverse());
+    return newOrder;
 }
