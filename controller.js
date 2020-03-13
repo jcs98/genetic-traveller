@@ -3,10 +3,13 @@ function keyTyped() {
         setupCities();
         redraw();
     }
+    else if (key == ' ') {
+        togglePause();
+    }
 }
 
 function mouseClicked() {
-    togglePause();
+    // togglePause();
 }
 
 function togglePause() {

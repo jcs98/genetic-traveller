@@ -8,6 +8,7 @@ let paused = false;
 let currentStrategy = "LEX";
 let steps;
 let stepsAtLastShortest;
+let totalPossible;
 
 let cities;
 let order;
@@ -16,15 +17,15 @@ let shortestPathOrder;
 
 let population;
 let fitness;
-let currentShortestGeneticDistance;
-let currentShortestGeneticPathOrder;
 let shortestGeneticDistance;
 let shortestGeneticPathOrder;
 let stepsAtLastGeneticShortest;
 
 function setupCities() {
-    steps = 0;
-    stepsAtLastShortest = 0;
+    steps = 1;
+    stepsAtLastShortest = 1;
+    stepsAtLastGeneticShortest = 1;
+    totalPossible = factorial(TOTAL_CITIES);
     cities = [];
     order = [];
     for (let i = 0; i < TOTAL_CITIES; i++) {
@@ -127,8 +128,6 @@ function nextGeneration(population, fitness) {
 
 function calculateFitness(cities, pop) {
     let fit = [];
-    let currentRecordDistance = Infinity;
-    let currentRecordOrder = Infinity;
 
     for (let i = 0; i < pop.length; i++) {
         let d = calcPathLength(cities, pop[i]);
@@ -137,13 +136,6 @@ function calculateFitness(cities, pop) {
             shortestGeneticPathOrder = pop[i].slice();
             stepsAtLastGeneticShortest = steps;
         }
-        if (d < currentRecordDistance) {
-            currentRecordDistance = d;
-            currentRecordOrder = pop[i].slice();
-        }
-
-        currentShortestGeneticDistance = currentRecordDistance;
-        currentShortestGeneticPathOrder = currentRecordOrder;
         fit[i] = 1 / (pow(d, 8) + 1);
     }
     return normalize(fit);

@@ -16,25 +16,24 @@ function draw() {
     // Plot Brute Force
     drawEdges(cities, shortestPathOrder, sw = 4, r = 0, g = 255, b = 0);
     drawCities(cities);
-
     translate(0, CANVAS_HEIGHT / 2);
     drawEdges(cities, order);
-    textSize(32);
-    text(order.join(""), 20, 20);
-    translate(0, -CANVAS_HEIGHT / 2);
-
-    translate(CANVAS_WIDTH / 2, 0);
 
     // Plot Genetic
-    // drawEdges(cities, currentShortestGeneticPathOrder);
+    translate(CANVAS_WIDTH / 2, -CANVAS_HEIGHT / 2);
     drawEdges(cities, shortestGeneticPathOrder, sw = 4, r = 0, g = 255, b = 0);
     drawCities(cities);
 
+    // Plot stats
+    translate(-CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+    drawStats();
+    translate(CANVAS_WIDTH / 2, -CANVAS_HEIGHT / 2);
+
+    // Plot genes
     translate(128, MAIN_DISPLAY_RATIO * CANVAS_HEIGHT + 64);
     drawGenes(population);
 
     nextRound();
-    // console.log(steps, nf(shortestDistance, 0, 2), stepsAtLastShortest, nf(shortestGeneticDistance, 0, 2), stepsAtLastGeneticShortest);
 }
 
 function drawEdges(cities, order, sw = 1, r = 255, g = 255, b = 255) {
@@ -58,17 +57,38 @@ function drawCities(cities, r = 10) {
     }
 }
 
-function drawGenes(population) {
+function drawGenes(population, sw = 4, r = 255, g = 0, b = 0) {
     scale(0.2);
+    textSize(16 * 5);
     let i = 0;
 
     for (let row = 1; row < 4; row++) {
         for (; i < (row * NUM_GENE_COLUMNS) && i < POP_SIZE; i++) {
-            drawEdges(cities, population[i], sw = 4, r = 255, g = 0, b = 0);
-            textSize(16 * 5);
+            drawEdges(cities, population[i], sw = sw, r = r, g = g, b = b);
+
+            fill(r, g, b);
+            strokeWeight(0);
             text(population[i].join(""), 20, 20);
-            translate(CANVAS_WIDTH / 2, 0);
+
+            translate(CANVAS_WIDTH / 1.5, 0);
         }
-        translate(-CANVAS_WIDTH / 2 * NUM_GENE_COLUMNS, CANVAS_HEIGHT / 1.5);
+        translate(-CANVAS_WIDTH / 1.5 * NUM_GENE_COLUMNS, CANVAS_HEIGHT / 1.5);
     }
+}
+
+function drawStats() {
+    const offsetX = CANVAS_WIDTH / 2;
+    fill(255);
+    strokeWeight(0);
+
+    textSize(36);
+    text(nf(shortestDistance, 0, 2) + " km", 104, 0);
+    text(nf(shortestGeneticDistance, 0, 2) + " km", 104 + offsetX, 0);
+
+    textSize(16);
+    text("Shortest path distance so far found" + " in " + stepsAtLastShortest + " iterations", 16, 32);
+    text("Shortest path distance so far found" + " in " + stepsAtLastGeneticShortest + " generations", 16 + offsetX, 32);
+
+    textSize(24);
+    text(nf(steps / totalPossible * 100, 0, 7) + "% completed...", 64, CANVAS_WIDTH / 5);
 }
