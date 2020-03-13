@@ -1,5 +1,5 @@
 function setup() {
-    createCanvas(900, 700);
+    createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     setupCities();
 }
 
@@ -7,18 +7,20 @@ function draw() {
     background(0);
     frameRate(FPS);
 
+    // Plot Brute Force
     drawEdges(cities, order);
     drawEdges(cities, shortestPathOrder, sw = 4, r = 0, g = 255, b = 0);
     drawCities(cities);
 
-    nextRound();
-    // console.log("Current Step:", steps);
-    // console.log("Current Order:", order);
-    // console.log("Current Distance:", nf(d, 0, 2));
+    translate(CANVAS_WIDTH / 2, 0);
 
-    // console.log("Steps at shortest:", stepsAtLastShortest);
-    // console.log("Shortest Path Order:", shortestPathOrder);
-    // console.log("Shortest distance:", nf(shortestDistance, 0, 2));
+    // Plot Genetic
+    drawEdges(cities, currentShortestGeneticPathOrder);
+    drawEdges(cities, shortestGeneticPathOrder, sw = 4, r = 0, g = 255, b = 0);
+    drawCities(cities);
+
+    nextRound();
+    // console.log(steps, nf(shortestDistance, 0, 2), stepsAtLastShortest, nf(shortestGeneticDistance, 0, 2), stepsAtLastGeneticShortest);
 }
 
 function drawEdges(cities, order, sw = 1, r = 255, g = 255, b = 255) {
