@@ -1,8 +1,8 @@
 // Params to modify
-const TOTAL_CITIES = 10;
-const FPS = 60;
-const POP_SIZE = 10;
-const MUTATION_RATE = 0.01;
+let TOTAL_CITIES = 10;
+let FPS = 12;
+let POP_SIZE = 10;
+let MUTATION_RATE = 0.01;
 
 let paused = false;
 let currentStrategy = "LEX";

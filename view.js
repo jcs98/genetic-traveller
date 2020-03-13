@@ -1,11 +1,12 @@
-const CANVAS_WIDTH = 1800;
-const CANVAS_HEIGHT = 800;
+const CANVAS_WIDTH = 1400;
+const CANVAS_HEIGHT = 600;
 const MAIN_DISPLAY_RATIO = 1 / 2;
 const NUM_GENE_COLUMNS = 3;
 const MAX_GENES_TO_DISPLAY = 9;
 
 function setup() {
-    createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+    let canvas = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+    canvas.parent('canvas-container');
     setupCities();
 }
 
