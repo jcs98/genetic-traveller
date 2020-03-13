@@ -1,6 +1,3 @@
-const CANVAS_WIDTH = 1300;
-const CANVAS_HEIGHT = 700;
-
 // Params to modify
 const TOTAL_CITIES = 10;
 const FPS = 60;
@@ -31,7 +28,7 @@ function setupCities() {
     cities = [];
     order = [];
     for (let i = 0; i < TOTAL_CITIES; i++) {
-        cities[i] = createVector(random(width / 2), random(height));
+        cities[i] = createVector(random(width / 2), random(MAIN_DISPLAY_RATIO * height));
         order[i] = i;
     }
 
