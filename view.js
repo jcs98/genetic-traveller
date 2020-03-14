@@ -11,18 +11,18 @@ function setup() {
 }
 
 function draw() {
-    background(0);
+    background(255);
     frameRate(FPS);
 
     // Plot Brute Force
-    drawEdges(cities, shortestPathOrder, sw = 4, r = 0, g = 255, b = 0);
+    drawEdges(cities, shortestPathOrder, sw = 4);
     drawCities(cities);
     translate(0, CANVAS_HEIGHT / 2);
     drawEdges(cities, order);
 
     // Plot Genetic
     translate(CANVAS_WIDTH / 2, -CANVAS_HEIGHT / 2);
-    drawEdges(cities, shortestGeneticPathOrder, sw = 4, r = 0, g = 255, b = 0);
+    drawEdges(cities, shortestGeneticPathOrder, sw = 4);
     drawCities(cities);
 
     // Plot stats
@@ -37,7 +37,7 @@ function draw() {
     nextRound();
 }
 
-function drawEdges(cities, order, sw = 1, r = 255, g = 255, b = 255) {
+function drawEdges(cities, order, sw = 1, r = 0, g = 123, b = 255) {
     noFill();
     stroke(r, g, b);
     strokeWeight(sw);
@@ -51,14 +51,14 @@ function drawEdges(cities, order, sw = 1, r = 255, g = 255, b = 255) {
 }
 
 function drawCities(cities, r = 10) {
-    fill(0, 255, 0);
+    fill(0, 123, 255);
 
     for (let i = 0; i < cities.length; i++) {
         ellipse(cities[i].x, cities[i].y, r, r);
     }
 }
 
-function drawGenes(population, sw = 4, r = 255, g = 0, b = 0) {
+function drawGenes(population, sw = 4, r = 0, g = 123, b = 255) {
     scale(0.2);
     textSize(16 * 5);
     let i = 0;
@@ -79,7 +79,7 @@ function drawGenes(population, sw = 4, r = 255, g = 0, b = 0) {
 
 function drawStats() {
     const offsetX = CANVAS_WIDTH / 2;
-    fill(255);
+    fill(32, 32, 32);
     strokeWeight(0);
 
     textSize(36);

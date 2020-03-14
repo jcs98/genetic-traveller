@@ -1,9 +1,9 @@
 function keyTyped() {
-    if (key == 'r') {
+    if (key == 's') {
         setItUp();
     }
     else if (key == ' ') {
-        togglePause();
+        $('#playpause').click();
     }
 }
 
